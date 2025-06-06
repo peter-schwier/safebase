@@ -12,14 +12,25 @@
     <script src="https://unpkg.com/chai@4/chai.js"></script>
     <script src="https://unpkg.com/mocha/mocha.js"></script>
 
+    <script src="safebase.js"></script>
     <script class="mocha-init">
+    </script>
+    <script>
       mocha.setup('bdd');
       mocha.checkLeaks();
-    </script>
-    <script src="safebase.js"></script>
-    <script src="test.js"></script>
-    <script class="mocha-exec">
+      describe('chai', function () {
+        describe('.assert', function () {
+          it('exists', function () {
+            chai.assert(chai.assert);
+          });
+          it('is a Number (expected to fail)', function () {
+            chai.isNumber(chai.assert);
+          });
+        });
+      });
       mocha.run();
+    </script>
+    <script class="mocha-exec">
     </script>
   </body>
 </html>
