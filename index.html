@@ -17,14 +17,15 @@
       mocha.setup('bdd');
       mocha.checkLeaks();
       // Doc: https://www.chaijs.com/api/assert/
+      let assert = chai.assert;
       describe('class SafeBase', function() {
-        it('should exist', () => chai.assert(SafeBase));
-        it('is a class', () => chai.isFunction(SafeBase));
+        it('should exist', () => assert.assert(SafeBase));
+        it('is a class', () => assert.isFunction(SafeBase));
         describe('default instance of SafeBase', () => {
           let safeBase = null;
           before(() => safeBase = new SafeBase());
-          it('should exist', () => chai.assert(safeBase));
-          it('should be a SafeBase', () => chai.instanceOf(safeBase, SafeBase));
+          it('should exist', () => assert.assert(safeBase));
+          it('should be a SafeBase', () => assert.instanceOf(safeBase, SafeBase));
         });
       });
       mocha.run();
