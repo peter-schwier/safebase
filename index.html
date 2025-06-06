@@ -19,13 +19,26 @@
       // Doc: https://www.chaijs.com/api/assert/
       let assert = chai.assert;
       describe('class SafeBase', function() {
-        it('should exist', () => assert.assert(SafeBase));
+        it('should exist', () => assert(SafeBase));
         it('is a class', () => assert.isFunction(SafeBase));
         describe('default instance of SafeBase', () => {
           let safeBase = null;
           before(() => safeBase = new SafeBase());
-          it('should exist', () => assert.assert(safeBase));
+          it('should exist', () => assert(safeBase));
           it('should be a SafeBase', () => assert.instanceOf(safeBase, SafeBase));
+        });
+        describe('SafeBase#encode("\\u0000", ...) should equal the input', () => {
+          [
+            'asdf',
+            '123',
+            'Markus Kuhn [ˈmaʳkʊs kuːn] <mkuhn@acm.org> — 1999-08-20',
+            '∮ E⋅da = Q,  n → ∞, ∑ f(i) = ∏ g(i), ∀x∈ℝ: ⌈x⌉ = −⌊−x⌋, α ∧ ¬β = ¬(¬α ∨ β),',
+            'ℕ ⊆ ℕ₀ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ, ⊥ < a ≠ b ≡ c ≤ d ≪ ⊤ ⇒ (A ⇔ B),'
+          ].forEach(s => {
+            it(s, () => {
+              assert.equal(new SafeBase().encode("\u0000", s), s);
+            });
+          });
         });
       });
       mocha.run();
