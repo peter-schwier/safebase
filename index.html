@@ -40,6 +40,20 @@
             output = (
               new Uint8Array(inputBuffer).toBase64()
             );
+        } else if (['p'].includes(prefix)) {
+            output = (function (inputBuffer, pattern, codes) {
+              let acc = BigInt(`0x${new Uint8Array(inputBuffer).toHex()}`);
+              let result = '';
+              while (acc > BigInt(0)) {
+                pattern.forEach(thisPattern => {
+                  const size = codes[thisPattern].length;
+                  const remainder = acc % BigInt(size);
+                  acc = acc / BigInt(size);
+                  result += codes[thisPattern][remainder];
+                });
+              }
+              return result.split("").reverse().join('');
+            })(inputBuffer, 'cvcvc'.split(''), {c:'b d f g h j k l m n p r s t v z'.split(' '),v:'a i o u'.split(' ')});
         } else {
             output = new TextDecoder().decode(inputBuffer);
         }
